@@ -1,0 +1,64 @@
+{
+  "majors": [
+    "J23517",
+    "J40192",
+    "J57489",
+    "J78901",
+    "J87654"
+  ],
+  "sexes": [
+    "female",
+    "male"
+  ],
+  "knowledges": [
+    "b3C9s",
+    "g7R2j",
+    "k4W1c",
+    "m3D1v",
+    "r8S3g",
+    "s8Y2f",
+    "t5V9e",
+    "y9W5d"
+  ],
+  "classes": [
+    "Class1",
+    "Class2",
+    "Class3",
+    "Class4",
+    "Class5",
+    "Class6",
+    "Class7",
+    "Class8",
+    "Class9",
+    "Class10",
+    "Class11",
+    "Class12",
+    "Class13",
+    "Class14",
+    "Class15"
+  ],
+  "weeks": [
+    "Week1",
+    "Week2",
+    "Week3",
+    "Week4",
+    "Week5",
+    "Week6",
+    "Week7",
+    "Week8",
+    "Week9",
+    "Week10",
+    "Week11",
+    "Week12",
+    "Week13",
+    "Week14",
+    "Week15",
+    "Week16",
+    "Week17",
+    "Week18",
+    "Week19",
+    "Week20",
+    "Week21",
+    "Week22"
+  ]
+}
