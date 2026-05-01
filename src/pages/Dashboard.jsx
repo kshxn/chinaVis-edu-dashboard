@@ -2,7 +2,22 @@ import { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import ChartCard from '../components/ChartCard'
 import TrendAreaChart from '../components/TrendAreaChart'
-import { getFilterOptions, getTrendData } from '../services/api'
+import StudentRadarChart from '../components/StudentRadarChart'
+import SubmitHeatmap from '../components/SubmitHeatmap'
+import EfficiencyScatter from '../components/EfficiencyScatter'
+import MajorClassSankey from '../components/MajorClassSankey'
+import KnowledgeChordChart from '../components/KnowledgeChordChart'
+import KnowledgeScaleBar from '../components/KnowledgeScaleBar'
+import {
+  getFilterOptions,
+  getTrendData,
+  getRadarData,
+  getHeatmapData,
+  getScatterData,
+  getMajorClassSankeyData,
+  getKnowledgeChordData,
+  getKnowledgeScaleData
+} from '../services/api'
 
 function Dashboard() {
   const [filters, setFilters] = useState({
@@ -20,6 +35,12 @@ function Dashboard() {
   })
 
   const [trendData, setTrendData] = useState([])
+  const [radarData, setRadarData] = useState(null)
+  const [heatmapData, setHeatmapData] = useState(null)
+  const [scatterData, setScatterData] = useState([])
+  const [sankeyData, setSankeyData] = useState(null)
+  const [chordData, setChordData] = useState(null)
+  const [knowledgeScaleData, setKnowledgeScaleData] = useState([])
 
   useEffect(() => {
     async function loadOptions() {
@@ -35,6 +56,34 @@ function Dashboard() {
       setTrendData(data)
     }
     loadTrend()
+  }, [filters])
+
+  useEffect(() => {
+    async function loadFlowCharts() {
+      const [sankey, chord] = await Promise.all([
+        getMajorClassSankeyData(filters),
+        getKnowledgeChordData(filters)
+      ])
+      setSankeyData(sankey)
+      setChordData(chord)
+    }
+    loadFlowCharts()
+  }, [filters])
+
+  useEffect(() => {
+    async function loadCharts() {
+      const [radar, heatmap, scatter, knowledgeScale] = await Promise.all([
+        getRadarData(filters),
+        getHeatmapData(filters),
+        getScatterData(filters),
+        getKnowledgeScaleData(filters)
+      ])
+      setRadarData(radar)
+      setHeatmapData(heatmap)
+      setScatterData(scatter)
+      setKnowledgeScaleData(knowledgeScale)
+    }
+    loadCharts()
   }, [filters])
 
   return (
@@ -60,12 +109,24 @@ function Dashboard() {
         </div>
 
         <div className="chart-grid">
-          <ChartCard title="多变量学生表现画像" />
-          <ChartCard title="知识点提交热力图" />
-          <ChartCard title="表现 vs 效率散点图" />
-          <ChartCard title="子知识标签规模" />
-          <ChartCard title="专业 → 班级 → 知识领域" />
-          <ChartCard title="知识标签相关性" />
+          <ChartCard title="多变量学生表现画像">
+            <StudentRadarChart data={radarData} />
+          </ChartCard>
+          <ChartCard title="知识点提交热力图">
+            <SubmitHeatmap data={heatmapData} />
+          </ChartCard>
+          <ChartCard title="表现 vs 效率散点图">
+            <EfficiencyScatter data={scatterData} />
+          </ChartCard>
+          <ChartCard title="子知识标签规模">
+            <KnowledgeScaleBar data={knowledgeScaleData} />
+          </ChartCard>
+          <ChartCard title="专业 → 班级流向">
+            <MajorClassSankey data={sankeyData} />
+          </ChartCard>
+          <ChartCard title="知识点相关性和弦图">
+            <KnowledgeChordChart data={chordData} />
+          </ChartCard>
           <ChartCard title="提交趋势与状态分布" className="span-2">
             <TrendAreaChart data={trendData} />
           </ChartCard>
